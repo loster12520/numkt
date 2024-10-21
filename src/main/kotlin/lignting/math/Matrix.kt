@@ -206,3 +206,77 @@ fun <T> Matrix<T>.reshape(newSizes: Pair<Int, Int>) = Matrix(
     type
 )
 
+
+data class ColumnVector<T>(
+    val size: Int,
+    val values: List<T>,
+    val type: Class<out Any>
+)
+
+fun ColumnVector<*>.shape() = size
+
+/**
+ * 类型
+ */
+fun ColumnVector<*>.type() = type
+
+/**
+ * 打印，并且把原来的值返回
+ */
+fun ColumnVector<*>.print() = this.also(::println)
+
+/**
+ * 向量
+ * @param [values] 值
+ */
+fun <T> columnVectorOf(vararg values: T) = ColumnVector(values.size, values.toList(), values[0]!!::class.java)
+
+/**
+ * 向量
+ * @param [values] 值
+ */
+fun <T> columnVectorOf(values: List<T>) = ColumnVector(values.size, values, values[0]!!::class.java)
+
+/**
+ * 为向量
+ */
+fun <T> List<T>.toColumnVector() = Vector(size, this, this[0]!!::class.java)
+
+/**
+ * 向量
+ * @param [shape] 形状
+ * @param [function] 函数
+ */
+fun ColumnVector(shape: Int, function: (Int) -> Number) = ColumnVector(shape, List(shape, function), Number::class.java)
+
+/**
+ * 转换成`Byte`
+ */
+fun ColumnVector<out Number>.asByte() = ColumnVector(size, values.map { it.toByte() }, Byte::class.java)
+
+/**
+ * 转换成`Short`
+ */
+fun ColumnVector<out Number>.asShort() = ColumnVector(size, values.map { it.toShort() }, Short::class.java)
+
+/**
+ * 转换成`Int`
+ */
+fun ColumnVector<out Number>.asInt() = ColumnVector(size, values.map { it.toInt() }, Int::class.java)
+
+/**
+ * 转换成`Long`
+ */
+fun ColumnVector<out Number>.asLong() = ColumnVector(size, values.map { it.toLong() }, Long::class.java)
+
+/**
+ * 转换成`Float`
+ */
+fun ColumnVector<out Number>.asFloat() = ColumnVector(size, values.map { it.toFloat() }, Float::class.java)
+
+/**
+ * 转换成`Double`
+ */
+fun ColumnVector<out Number>.asDouble() = ColumnVector(size, values.map { it.toDouble() }, Double::class.java)
+
+
