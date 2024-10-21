@@ -192,6 +192,24 @@ fun Matrix(shape: Pair<Int, Int>, function: (Pair<Int, Int>) -> Number) = Matrix
 }, Number::class.java)
 
 
+fun Matrix<out Number>.asInt() = Matrix(shape,values.map { it.map { it.toInt() } },type)
+
+
+fun Matrix<out Number>.asDouble() = Matrix(shape,values.map { it.map { it.toDouble() } },type)
+
+
+fun Matrix<out Number>.asByte() = Matrix(shape,values.map { it.map { it.toByte() } },type)
+
+
+fun Matrix<out Number>.asShort() = Matrix(shape,values.map { it.map { it.toShort() } },type)
+
+
+fun Matrix<out Number>.asLong() = Matrix(shape,values.map { it.map { it.toLong() } },type)
+
+
+fun Matrix<out Number>.asFloat() = Matrix(shape,values.map { it.map { it.toFloat() } },type)
+
+
 /**
  * 重塑
  * @param [newSizes] 新尺寸
