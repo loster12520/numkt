@@ -362,5 +362,51 @@ operator fun Matrix<out Number>.div(other: Vector<Number>) =
         require(shape.second == other.size)
     }
 
+
 operator fun Matrix<out Number>.div(other: Number) =
     this + Matrix(shape, List(shape.first){List(shape.second){other} }, type)
+
+fun Vector<*>.T() = ColumnVector(size, values, type)
+
+fun ColumnVector<*>.T() = Vector(size, values, type)
+
+fun Matrix<*>.T() = Matrix(
+    shape.second to shape.first,
+    (0..<shape.second).map { first ->
+        (0..<shape.first).map { second ->
+            values[first][second]
+        }
+    }, type
+)
+
+//infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
+//    require(size == other.size)
+//    return when (type) {
+//        Int::class.java -> (0..<size).reduce { a, index ->
+//            a + (values[index].toInt() * other.values[index].toInt())
+//        }
+//
+//        Byte::class.java -> (0..<size).reduce { a, index ->
+//            a + (values[index].toByte() * other.values[index].toByte())
+//        }
+//
+//        Short::class.java -> (0..<size).reduce { a, index ->
+//            a + (values[index].toShort() * other.values[index].toShort())
+//        }
+//
+//        Long::class.java -> values.zip(other.values).reduce { a: Number, it ->
+//            a.toLong() + (it.first.toLong() * it.second.toLong())
+//        }
+//
+//        Float::class.java -> (0..<size).reduce { a, index ->
+//            a + (values[index].toInt() * other.values[index].toInt())
+//        }
+//
+//        Double::class.java -> (0..<size).reduce { a, index ->
+//            a + (values[index].toInt() * other.values[index].toInt())
+//        }
+//
+//        else -> throw RuntimeException("unsupported vector type")
+//    }
+//
+//}
