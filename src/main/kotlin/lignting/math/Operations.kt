@@ -80,8 +80,8 @@ operator fun Matrix<out Number>.plus(other: Matrix<Number>) =
     }
 
 operator fun Matrix<out Number>.plus(other: Vector<Number>) =
-    this + Matrix(shape, (0..<shape.first).mapIndexed {index, _ ->
-        (0 .. shape.second).map {
+    this + Matrix(shape, (0..<shape.first).mapIndexed { index, _ ->
+        (0..shape.second).map {
             other.values[index]
         }
     }, other.type).also {
@@ -89,7 +89,7 @@ operator fun Matrix<out Number>.plus(other: Vector<Number>) =
     }
 
 operator fun Matrix<out Number>.plus(other: Number) =
-    this + Matrix(shape, List(shape.first){List(shape.second){other} }, type)
+    this + Matrix(shape, List(shape.first) { List(shape.second) { other } }, type)
 
 
 operator fun Vector<out Number>.minus(other: Vector<Number>) =
@@ -172,8 +172,8 @@ operator fun Matrix<out Number>.minus(other: Matrix<Number>) =
     }
 
 operator fun Matrix<out Number>.minus(other: Vector<Number>) =
-    this + Matrix(shape, (0..<shape.first).mapIndexed {index, _ ->
-        (0 .. shape.second).map {
+    this + Matrix(shape, (0..<shape.first).mapIndexed { index, _ ->
+        (0..shape.second).map {
             other.values[index]
         }
     }, other.type).also {
@@ -181,7 +181,7 @@ operator fun Matrix<out Number>.minus(other: Vector<Number>) =
     }
 
 operator fun Matrix<out Number>.minus(other: Number) =
-    this + Matrix(shape, List(shape.first){List(shape.second){other} }, type)
+    this + Matrix(shape, List(shape.first) { List(shape.second) { other } }, type)
 
 operator fun Vector<out Number>.times(other: Vector<Number>) =
     when (type) {
@@ -263,8 +263,8 @@ operator fun Matrix<out Number>.times(other: Matrix<Number>) =
     }
 
 operator fun Matrix<out Number>.times(other: Vector<Number>) =
-    this + Matrix(shape, (0..<shape.first).mapIndexed {index, _ ->
-        (0 .. shape.second).map {
+    this + Matrix(shape, (0..<shape.first).mapIndexed { index, _ ->
+        (0..shape.second).map {
             other.values[index]
         }
     }, other.type).also {
@@ -272,7 +272,7 @@ operator fun Matrix<out Number>.times(other: Vector<Number>) =
     }
 
 operator fun Matrix<out Number>.times(other: Number) =
-    this + Matrix(shape, List(shape.first){List(shape.second){other} }, type)
+    this + Matrix(shape, List(shape.first) { List(shape.second) { other } }, type)
 
 operator fun Vector<out Number>.div(other: Vector<Number>) =
     when (type) {
@@ -354,8 +354,8 @@ operator fun Matrix<out Number>.div(other: Matrix<Number>) =
     }
 
 operator fun Matrix<out Number>.div(other: Vector<Number>) =
-    this + Matrix(shape, (0..<shape.first).mapIndexed {index, _ ->
-        (0 .. shape.second).map {
+    this + Matrix(shape, (0..<shape.first).mapIndexed { index, _ ->
+        (0..shape.second).map {
             other.values[index]
         }
     }, other.type).also {
@@ -364,11 +364,11 @@ operator fun Matrix<out Number>.div(other: Vector<Number>) =
 
 
 operator fun Matrix<out Number>.div(other: Number) =
-    this + Matrix(shape, List(shape.first){List(shape.second){other} }, type)
+    this + Matrix(shape, List(shape.first) { List(shape.second) { other } }, type)
 
-fun Vector<*>.T() = ColumnVector(size, values, type)
+fun <E> Vector<E>.t(): ColumnVector<E> = ColumnVector(size, values, type)
 
-fun ColumnVector<*>.T() = Vector(size, values, type)
+fun <E> ColumnVector<E>.t(): Vector<E> = Vector(size, values, type)
 
 fun Matrix<*>.T() = Matrix(
     shape.second to shape.first,
@@ -379,13 +379,13 @@ fun Matrix<*>.T() = Matrix(
     }, type
 )
 
-infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
+infix fun Vector<out Number>.dot(other: ColumnVector<out Number>): Number {
     require(size == other.size)
     return when (type) {
         Int::class.java -> values.zip(other.values).let {
             var count = 0
             it.forEach {
-                count += (it.first.toInt()*it.second.toInt())
+                count += (it.first.toInt() * it.second.toInt())
             }
             count
         }
@@ -393,7 +393,7 @@ infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
         Byte::class.java -> values.zip(other.values).let {
             var count = 0
             it.forEach {
-                count += (it.first.toByte()*it.second.toByte())
+                count += (it.first.toByte() * it.second.toByte())
             }
             count.toByte()
         }
@@ -401,7 +401,7 @@ infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
         Short::class.java -> values.zip(other.values).let {
             var count = 0
             it.forEach {
-                count += (it.first.toShort()*it.second.toShort())
+                count += (it.first.toShort() * it.second.toShort())
             }
             count.toShort()
         }
@@ -409,7 +409,7 @@ infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
         Long::class.java -> values.zip(other.values).let {
             var count = 0L
             it.forEach {
-                count += (it.first.toLong()*it.second.toLong())
+                count += (it.first.toLong() * it.second.toLong())
             }
             count
         }
@@ -417,7 +417,7 @@ infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
         Float::class.java -> values.zip(other.values).let {
             var count = 0.0f
             it.forEach {
-                count += (it.first.toFloat()*it.second.toFloat())
+                count += (it.first.toFloat() * it.second.toFloat())
             }
             count
         }
@@ -425,7 +425,7 @@ infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
         Double::class.java -> values.zip(other.values).let {
             var count = 0.0
             it.forEach {
-                count += (it.first.toDouble()*it.second.toDouble())
+                count += (it.first.toDouble() * it.second.toDouble())
             }
             count
         }
@@ -435,12 +435,12 @@ infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
 
 }
 
-infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
-    when(type){
+infix fun ColumnVector<out Number>.dot(other: Vector<out Number>) =
+    when (type) {
         Int::class.java -> Matrix(
             size to other.size,
-            values.map { first->
-                other.values.map { second->
+            values.map { first ->
+                other.values.map { second ->
                     first.toInt() * second.toInt()
                 }
             },
@@ -449,8 +449,8 @@ infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
 
         Byte::class.java -> Matrix(
             size to other.size,
-            values.map { first->
-                other.values.map { second->
+            values.map { first ->
+                other.values.map { second ->
                     first.toByte() * second.toByte()
                 }
             },
@@ -459,8 +459,8 @@ infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
 
         Short::class.java -> Matrix(
             size to other.size,
-            values.map { first->
-                other.values.map { second->
+            values.map { first ->
+                other.values.map { second ->
                     first.toShort() * second.toShort()
                 }
             },
@@ -469,8 +469,8 @@ infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
 
         Long::class.java -> Matrix(
             size to other.size,
-            values.map { first->
-                other.values.map { second->
+            values.map { first ->
+                other.values.map { second ->
                     first.toLong() * second.toLong()
                 }
             },
@@ -479,8 +479,8 @@ infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
 
         Float::class.java -> Matrix(
             size to other.size,
-            values.map { first->
-                other.values.map { second->
+            values.map { first ->
+                other.values.map { second ->
                     first.toFloat() * second.toFloat()
                 }
             },
@@ -489,8 +489,8 @@ infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
 
         Double::class.java -> Matrix(
             size to other.size,
-            values.map { first->
-                other.values.map { second->
+            values.map { first ->
+                other.values.map { second ->
                     first.toDouble() * second.toDouble()
                 }
             },
@@ -499,3 +499,10 @@ infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
 
         else -> throw RuntimeException("unsupported vector type")
     }
+
+fun Vector<out Number>.forms() =
+    this dot this.t()
+
+fun Vector<out Number>.distance(vector: Vector<out Number>) =
+    this dot vector.t()
+
