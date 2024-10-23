@@ -379,34 +379,123 @@ fun Matrix<*>.T() = Matrix(
     }, type
 )
 
-//infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
-//    require(size == other.size)
-//    return when (type) {
-//        Int::class.java -> (0..<size).reduce { a, index ->
-//            a + (values[index].toInt() * other.values[index].toInt())
-//        }
-//
-//        Byte::class.java -> (0..<size).reduce { a, index ->
-//            a + (values[index].toByte() * other.values[index].toByte())
-//        }
-//
-//        Short::class.java -> (0..<size).reduce { a, index ->
-//            a + (values[index].toShort() * other.values[index].toShort())
-//        }
-//
-//        Long::class.java -> values.zip(other.values).reduce { a: Number, it ->
-//            a.toLong() + (it.first.toLong() * it.second.toLong())
-//        }
-//
-//        Float::class.java -> (0..<size).reduce { a, index ->
-//            a + (values[index].toInt() * other.values[index].toInt())
-//        }
-//
-//        Double::class.java -> (0..<size).reduce { a, index ->
-//            a + (values[index].toInt() * other.values[index].toInt())
-//        }
-//
-//        else -> throw RuntimeException("unsupported vector type")
-//    }
-//
-//}
+infix fun Vector<out Number>.dot(other: ColumnVector<Number>): Number {
+    require(size == other.size)
+    return when (type) {
+        Int::class.java -> values.zip(other.values).let {
+            var count = 0
+            it.forEach {
+                count += (it.first.toInt()*it.second.toInt())
+            }
+            count
+        }
+
+        Byte::class.java -> values.zip(other.values).let {
+            var count = 0
+            it.forEach {
+                count += (it.first.toByte()*it.second.toByte())
+            }
+            count.toByte()
+        }
+
+        Short::class.java -> values.zip(other.values).let {
+            var count = 0
+            it.forEach {
+                count += (it.first.toShort()*it.second.toShort())
+            }
+            count.toShort()
+        }
+
+        Long::class.java -> values.zip(other.values).let {
+            var count = 0L
+            it.forEach {
+                count += (it.first.toLong()*it.second.toLong())
+            }
+            count
+        }
+
+        Float::class.java -> values.zip(other.values).let {
+            var count = 0.0f
+            it.forEach {
+                count += (it.first.toFloat()*it.second.toFloat())
+            }
+            count
+        }
+
+        Double::class.java -> values.zip(other.values).let {
+            var count = 0.0
+            it.forEach {
+                count += (it.first.toDouble()*it.second.toDouble())
+            }
+            count
+        }
+
+        else -> throw RuntimeException("unsupported vector type")
+    }
+
+}
+
+infix fun ColumnVector<out Number>.dot(other: Vector<Number>) =
+    when(type){
+        Int::class.java -> Matrix(
+            size to other.size,
+            values.map { first->
+                other.values.map { second->
+                    first.toInt() * second.toInt()
+                }
+            },
+            type
+        )
+
+        Byte::class.java -> Matrix(
+            size to other.size,
+            values.map { first->
+                other.values.map { second->
+                    first.toByte() * second.toByte()
+                }
+            },
+            type
+        )
+
+        Short::class.java -> Matrix(
+            size to other.size,
+            values.map { first->
+                other.values.map { second->
+                    first.toShort() * second.toShort()
+                }
+            },
+            type
+        )
+
+        Long::class.java -> Matrix(
+            size to other.size,
+            values.map { first->
+                other.values.map { second->
+                    first.toLong() * second.toLong()
+                }
+            },
+            type
+        )
+
+        Float::class.java -> Matrix(
+            size to other.size,
+            values.map { first->
+                other.values.map { second->
+                    first.toFloat() * second.toFloat()
+                }
+            },
+            type
+        )
+
+        Double::class.java -> Matrix(
+            size to other.size,
+            values.map { first->
+                other.values.map { second->
+                    first.toDouble() * second.toDouble()
+                }
+            },
+            type
+        )
+
+        else -> throw RuntimeException("unsupported vector type")
+    }
