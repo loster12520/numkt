@@ -298,3 +298,12 @@ fun ColumnVector<out Number>.asFloat() = ColumnVector(size, values.map { it.toFl
 fun ColumnVector<out Number>.asDouble() = ColumnVector(size, values.map { it.toDouble() }, Double::class.java)
 
 
+fun <E> Matrix<E>.vectors() =
+    values.map {
+        Vector(shape.first,it,type)
+    }
+
+fun <E> Matrix<E>.columnVectors()=
+    values[0].mapIndexed {index,_->
+        ColumnVector(shape.second,(0..<shape.second).map { values[it][index] },type)
+    }

@@ -503,6 +503,16 @@ infix fun ColumnVector<out Number>.dot(other: Vector<out Number>) =
 fun Vector<out Number>.forms() =
     this dot this.t()
 
-fun Vector<out Number>.distance(vector: Vector<out Number>) =
+infix fun Vector<out Number>.distance(vector: Vector<out Number>) =
     this dot vector.t()
 
+infix fun Matrix<out Number>.dot(other: Matrix<out Number>) =
+    Matrix(
+        shape.first to other.shape.second,
+        this.vectors().map {a->
+            other.columnVectors().map{b->
+                a dot b
+            }
+        },
+        type
+    )
